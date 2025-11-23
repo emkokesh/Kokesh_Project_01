@@ -26,3 +26,10 @@ This repository contains my BIOS 6621 project for Assignment: R Markdown and Git
 - Produces a **formatted table** of descriptive statistics using `kable`.
 - Includes **inline calculations** (sample size and means).
 - Has multiple R code chunks.
+
+**What this version covers (Part 3):**
+
+- The change from 999 → 99 is made **in a code chunk**.
+- All summaries and plots use the corrected `lead` data.
+- Create a cleaned file in `DataProcessed/`.
+- R chunk comment mentions the correction explicitly.

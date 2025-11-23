@@ -37,13 +37,30 @@ n_far     <- sum(lead_raw$Smelter == "Far")
 overall_mean_IQ <- mean(lead_raw$IQ)
 
 ```
+
+```{r clean-data}
+# Recode the incorrect IQ value of 999 to 99
+lead <- lead_raw %>%
+  mutate(
+    IQ = if_else(IQ == 999, 99L, IQ)
+  )
+
+# Recompute counts and means based on the cleaned data
+n_total   <- nrow(lead)
+n_near    <- sum(lead$Smelter == "Near")
+n_far     <- sum(lead$Smelter == "Far")
+
+overall_mean_IQ <- mean(lead$IQ)
+
+```
+
 There are `r n_total` children in this dataset:
 `r n_near` lived near the smelter and `r n_far` lived farther away.
 The overall mean IQ in the sample is `r round(overall_mean_IQ, 1)`.
 
 ## Descriptive statistics table
 ```{r}
-summary_by_smelter <- lead_raw %>%
+summary_by_smelter <- lead %>%
 group_by(Smelter) %>%
 summarise(
 n       = n(),
@@ -72,7 +89,7 @@ for those living farther away.
 
 ## IQ by smelter proximity plot
 ```{r}
-ggplot(lead_raw, aes(x = Smelter, y = IQ)) +
+ggplot(lead, aes(x = Smelter, y = IQ)) +
 geom_boxplot() +
 labs(
 title = "IQ scores by proximity to lead smelter",
@@ -86,4 +103,9 @@ theme_minimal()
 The boxplot shows the distribution of IQ scores for children living near
 and far from the smelter. We can visually compare typical IQ levels and
 the variability in each group, as well as identify any potential outliers.
+
+```{r}
+#write_csv(lead, "../DataProcessed/lead-iq-01-clean.csv")
+```
+
 
