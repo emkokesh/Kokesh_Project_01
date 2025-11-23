@@ -5,18 +5,24 @@ This repository contains my BIOS 6621 project for Assignment: R Markdown and Git
 ## Directory structure
 
 - `Background/`  
-  Literature, project notes, and any non-code documentation that describes the scientific background and study design.
+  PDF documentation that describes the dataset.
 
 - `Code/`  
   All analysis code, including R scripts and R Markdown files used to clean data, run analyses, and generate figures/tables.
 
 - `Reports/`  
-  Knit reports (HTML, Word, PDF) and other write-ups that summarize data checking, methods, and results.
+  Knit reports (HTML) and other write-ups that summarize data checking, methods, and results.
 
 - `DataRaw/`  
-  Original raw data files as received from the investigators (read-only; do not edit these by hand).
+  Original raw data files as received from the investigators.
 
 - `DataProcessed/`  
-  Cleaned and derived data sets created from the raw data using code in the `Code/` folder.
+  Cleaned and derived data sets created from the raw data.
 
-The directory layout follows the general structure recommended by the **CIDAtools** package for reproducible projects.
+**What this version covers (Part 2):**
+
+- Reads the data from `DataRaw/lead-iq-01.csv`.
+- Produces a **boxplot** of IQ by smelter status.
+- Produces a **formatted table** of descriptive statistics using `kable`.
+- Includes **inline calculations** (sample size and means).
+- Has multiple R code chunks.

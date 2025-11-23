@@ -1,0 +1,89 @@
+---
+title: "Lead IQ Data Report"
+author: "Emily Kokesh"
+date: "2025-11-23"
+output: html_document
+---
+
+## Imports
+
+```{r}
+knitr::opts_chunk$set(
+echo = TRUE,
+message = FALSE,
+warning = FALSE
+)
+
+library(tidyverse)
+library(knitr)
+
+```
+
+## Introduction
+
+This report summarizes the relationship between children’s IQ scores and
+their proximity to a lead smelter.
+
+```{r}
+
+lead_raw <- read_csv("../DataRaw/lead-iq-01.csv")
+
+# Basic counts used for in-line text
+
+n_total   <- nrow(lead_raw)
+n_near    <- sum(lead_raw$Smelter == "Near")
+n_far     <- sum(lead_raw$Smelter == "Far")
+
+overall_mean_IQ <- mean(lead_raw$IQ)
+
+```
+There are `r n_total` children in this dataset:
+`r n_near` lived near the smelter and `r n_far` lived farther away.
+The overall mean IQ in the sample is `r round(overall_mean_IQ, 1)`.
+
+## Descriptive statistics table
+```{r}
+summary_by_smelter <- lead_raw %>%
+group_by(Smelter) %>%
+summarise(
+n       = n(),
+mean_IQ = mean(IQ),
+sd_IQ   = sd(IQ),
+min_IQ  = min(IQ),
+max_IQ  = max(IQ),
+.groups = "drop"
+)
+
+
+kable(
+summary_by_smelter,
+digits = 1,
+caption = "Descriptive statistics for IQ scores by distance from the smelter."
+)
+
+```
+
+The table above shows the number of children, mean IQ, and spread of IQ
+scores for those living near versus far from the smelter. At this stage,
+the group means are `r round(summary_by_smelter$mean_IQ[summary_by_smelter$Smelter == "Near"], 1)`
+for children living near the smelter and
+`r round(summary_by_smelter$mean_IQ[summary_by_smelter$Smelter == "Far"], 1)`
+for those living farther away.
+
+## IQ by smelter proximity plot
+```{r}
+ggplot(lead_raw, aes(x = Smelter, y = IQ)) +
+geom_boxplot() +
+labs(
+title = "IQ scores by proximity to lead smelter",
+x = "Proximity to smelter",
+y = "IQ score (WISC)"
+) +
+theme_minimal()
+
+```
+
+The boxplot shows the distribution of IQ scores for children living near
+and far from the smelter. We can visually compare typical IQ levels and
+the variability in each group, as well as identify any potential outliers.
+
